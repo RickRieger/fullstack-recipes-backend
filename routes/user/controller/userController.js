@@ -4,6 +4,7 @@ const User = require("../model/User");
 const jwt = require("jsonwebtoken");
 
 async function signup(req, res, next) {
+  console.log('sign-up-works')
   const { username, email, password, firstName, lastName } = req.body;
 
   const { errorObj } = res.locals;
@@ -37,7 +38,7 @@ async function signup(req, res, next) {
 
 async function login(req, res) {
   const { email, password } = req.body;
-
+  console.log(email);
   const { errorObj } = res.locals;
 
   if (Object.keys(errorObj).length > 0) {
@@ -65,7 +66,6 @@ async function login(req, res) {
         let jwtToken = jwt.sign(
           {
             email: foundUser.email,
-            username: foundUser.username,
           },
           process.env.PRIVATE_JWT_KEY,
           {
@@ -81,4 +81,39 @@ async function login(req, res) {
   }
 }
 
-module.exports = { signup, login };
+
+async function fetchUserInfo(req, res, next) {
+  try {
+    let userInfo = await User.findOne({
+      email: res.locals.decodedJwt.email,
+    }).select("-password -__v");
+    res.json({ message: "success", payload: userInfo });
+  } catch (e) {
+    next(e);
+  }
+}
+
+async function updateUser(req, res, next) {
+  console.log(req.body);
+  if (req.body.password) {
+    let salt = await bcrypt.genSalt(12);
+    let hashedPassword = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hashedPassword;
+  }
+  try {
+    let updatedUser = await User.findOneAndUpdate(
+      { email: res.locals.decodedJwt.email },
+      req.body,
+      { new: true }
+    );
+    if (req.body.password) {
+      res.status(202).json({ message: "success", payload: updatedUser });
+    } else {
+      res.json({ message: "success", payload: updatedUser });
+    }
+  } catch (e) {
+    next(e);
+  }
+}
+
+module.exports = { signup, login, fetchUserInfo, updateUser };
