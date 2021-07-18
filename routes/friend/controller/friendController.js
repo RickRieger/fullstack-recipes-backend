@@ -10,7 +10,7 @@ const getAllFriends = async (req, res) => {
         model: Friend,
         select: '-__v',
       })
-      .select('-email -password -firstName -lastName -__v -_id -username');
+      .select('-email -password -firstName -lastName -__v -_id -userName');
 
     res.json(payload);
   } catch (e) {

@@ -4,8 +4,8 @@ const User = require("../model/User");
 const jwt = require("jsonwebtoken");
 
 async function signup(req, res, next) {
-  console.log('sign-up-works')
-  const { username, email, password, firstName, lastName } = req.body;
+  console.log("request here man!")
+  const { userName, email, password, firstName, lastName } = req.body;
 
   const { errorObj } = res.locals;
 
@@ -16,17 +16,17 @@ async function signup(req, res, next) {
   try {
     let salt = await bcrypt.genSalt(12);
     let hashedPassword = await bcrypt.hash(password, salt);
-
+    
     const createdUser = new User({
       firstName,
       lastName,
       email,
-      username,
+      userName,
       password: hashedPassword,
     });
-
+  
     let savedUser = await createdUser.save();
-
+    console.log('dude....');
     res.json({ message: "success"});
   } catch (e) {
     // console.log(e);

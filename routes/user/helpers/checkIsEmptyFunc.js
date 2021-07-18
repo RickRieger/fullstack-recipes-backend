@@ -4,7 +4,7 @@ const { checkIsEmpty } = require("../../utils/authMethods");
 //else go to the next middleware function next()
 function checkIsEmptyFunc(req, res, next) {
   let inComingData = req.body;
-
+ 
   const { errorObj } = res.locals;
 
   for (let key in inComingData) {

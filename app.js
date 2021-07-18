@@ -27,6 +27,7 @@ app.use("/api/user", userRouter);
 app.use("/api/twilio", twilioRouter);
 app.use("/api/friend", friendRouter);
 app.all("*", function (req, res, next) {
+  
   next(
     new ErrorMessageHandlerClass(
       `Cannot find ${req.originalUrl} on this server! Check your URL`,

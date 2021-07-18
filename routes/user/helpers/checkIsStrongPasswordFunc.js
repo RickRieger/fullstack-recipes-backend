@@ -7,10 +7,10 @@ function checkIsStrongPasswordFunc(req, res, next) {
 
   //make sure password is there before moving forward
 
-  // if (!checkIsStrongPassword(req.body.password)) {
-  //   errorObj.weakPassword =
-  //     "Password must include 1 lowercase, 1 uppercase, 1 special character, 1 number, and a length of 8";
-  // }
+  if (!checkIsStrongPassword(req.body.password)) {
+    errorObj.weakPassword =
+      "Password must include 1 lowercase, 1 uppercase, 1 special character, 1 number, and a length of 8";
+  }
 
   next();
 }
