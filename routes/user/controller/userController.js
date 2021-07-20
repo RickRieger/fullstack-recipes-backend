@@ -16,7 +16,8 @@ async function signup(req, res, next) {
   try {
     let salt = await bcrypt.genSalt(12);
     let hashedPassword = await bcrypt.hash(password, salt);
-    
+  
+
     const createdUser = new User({
       firstName,
       lastName,
