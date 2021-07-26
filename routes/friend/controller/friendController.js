@@ -1,6 +1,7 @@
 const Friend = require('../model/Friend');
 const User = require('../../user/model/User.js');
-const getAllFriends = async (req, res) => {
+
+const getAllFriends = async (req, res, next) => {
   try {
     const { decodedJwt } = res.locals;
 
@@ -14,10 +15,11 @@ const getAllFriends = async (req, res) => {
 
     res.json(payload);
   } catch (e) {
-    res.status(500).json({ e: e, message: e.message });
+    next(e)
   }
 };
-const createFriend = async (req, res) => {
+const createFriend = async (req, res, next) => {
+
   try {
     const { firstName, lastName, mobileNumber } = req.body;
     const newFriend = new Friend({
@@ -28,14 +30,13 @@ const createFriend = async (req, res) => {
     const savedNewFriend = await newFriend.save();
     //when you saved a friend - an ID is created from the databse
     const { decodedJwt } = res.locals;
-    console.log(res.locals);
     //now we have to find the user ID
     const foundTargetUser = await User.findOne({ email: decodedJwt.email });
     foundTargetUser.friends.push(savedNewFriend._id);
     await foundTargetUser.save();
     res.json(savedNewFriend);
   } catch (e) {
-    res.status(500).json({ e: e, message: e.message });
+    next(e)
   }
 };
 const updateFriendById = async (req, res, next) => {
@@ -47,6 +48,9 @@ const updateFriendById = async (req, res, next) => {
     }
   }
   console.log(updateObj);
+
+
+
   try {
     let updatedFriend = await Friend.findByIdAndUpdate(
       req.params.id,
@@ -58,7 +62,7 @@ const updateFriendById = async (req, res, next) => {
       payload: updatedFriend,
     });
   } catch (e) {
-    next(e);
+    next(e)
   }
 };
 
@@ -93,16 +97,11 @@ const deleteFriendById = async (req, res, next) => {
 
     let foundUserArray = foundUser.friends;
 
-    console.log(foundUserArray, '1');
-
     let filteredFriendsArray = foundUserArray.filter((id) => {
-      // console.log(id)
-      // console.log(deletedFriend);
+
       return id.toString() !== deletedFriend._id.toString();
 
     });
-
-    console.log(filteredFriendsArray, '3');
 
     foundUser.friends = filteredFriendsArray;
 

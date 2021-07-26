@@ -8,6 +8,8 @@ const errorController = require("./routes/utils/errorController");
 const userRouter = require("./routes/user/userRouter");
 const twilioRouter = require("./routes/twilio/twilioRouter");
 const friendRouter = require("./routes/friend/friendRouter");
+const recipeRouter = require("./routes/recipe/recipeRouter");
+const groceryRouter = require("./routes/grocery/groceryRouter");
 
 app.use(cors());
 if (process.env.NODE_ENV === "development") {
@@ -26,6 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/user", userRouter);
 app.use("/api/twilio", twilioRouter);
 app.use("/api/friend", friendRouter);
+app.use("/api/recipe", recipeRouter);
+app.use("/api/grocery", groceryRouter);
 app.all("*", function (req, res, next) {
   
   next(
