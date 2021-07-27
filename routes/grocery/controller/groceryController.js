@@ -25,33 +25,53 @@ async function getAllGroceryItems(req, res, next) {
 }
 
 async function createGroceryItem(req, res, next) {
-  
-  const groceryItemListArray = req.body;
-  
-  let savedGroceryArray = []
-  try {
-    for (groceryItem of groceryItemListArray) {
-      console.log(groceryItem);
-
+  if (req.body.grocery) {
+    const groceryItem = req.body.grocery;
+    try {
       let createdGroceryItem = new Grocery({
         grocery: groceryItem,
       });
       let savedGroceryItem = await createdGroceryItem.save();
 
-      savedGroceryArray.push(savedGroceryItem);
-
       const { decodedJwt } = res.locals;
-      
+
       const foundTargetUser = await User.findOne({ email: decodedJwt.email });
       foundTargetUser.grocery.push(savedGroceryItem._id);
 
       await foundTargetUser.save();
-    }
 
-    res.json({ payload: savedGroceryArray });
-  } catch (e) {
-    next(e);
-    // res.status(500).json({ message: e.message, error: e });
+      res.json({ payload: savedGroceryItem });
+    } catch (e) {
+      next(e);
+    }
+  } else {
+    const groceryItemListArray = req.body;
+
+    let savedGroceryArray = [];
+    try {
+      for (groceryItem of groceryItemListArray) {
+        console.log(groceryItem);
+
+        let createdGroceryItem = new Grocery({
+          grocery: groceryItem,
+        });
+        let savedGroceryItem = await createdGroceryItem.save();
+
+        savedGroceryArray.push(savedGroceryItem);
+
+        const { decodedJwt } = res.locals;
+
+        const foundTargetUser = await User.findOne({ email: decodedJwt.email });
+        foundTargetUser.grocery.push(savedGroceryItem._id);
+
+        await foundTargetUser.save();
+      }
+
+      res.json({ payload: savedGroceryArray });
+    } catch (e) {
+      next(e);
+      // res.status(500).json({ message: e.message, error: e });
+    }
   }
 }
 
