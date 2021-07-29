@@ -11,8 +11,8 @@ const getAllRecipes = async (req, res,next) => {
         model: Recipe,
         select: '-__v',
       })
-      .select('-email -password -firstName -lastName -__v -_id -userName -friends');
-
+      .select('-email -password -firstName -lastName -__v -_id -userName -friends -grocery');
+    console.log(payload);
     res.json(payload);
   } catch (e) {
     next(e)

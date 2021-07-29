@@ -13,7 +13,6 @@ router.post("/send-sms",jwtMiddleware, function (req, res) {
       body: req.body.message,
       from: "+19165849590",
       to: `+1${req.body.to}`,
-      // to: "+18043068023"
     })
     .then((message) => res.json(message))
     .catch((error) => {
