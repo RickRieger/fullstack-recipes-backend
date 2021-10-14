@@ -15,11 +15,10 @@ const getAllFriends = async (req, res, next) => {
 
     res.json(payload);
   } catch (e) {
-    next(e)
+    next(e);
   }
 };
 const createFriend = async (req, res, next) => {
-
   try {
     const { firstName, lastName, mobileNumber } = req.body;
     const newFriend = new Friend({
@@ -36,7 +35,7 @@ const createFriend = async (req, res, next) => {
     await foundTargetUser.save();
     res.json(savedNewFriend);
   } catch (e) {
-    next(e)
+    next(e);
   }
 };
 const updateFriendById = async (req, res, next) => {
@@ -49,8 +48,6 @@ const updateFriendById = async (req, res, next) => {
   }
   console.log(updateObj);
 
-
-
   try {
     let updatedFriend = await Friend.findByIdAndUpdate(
       req.params.id,
@@ -62,7 +59,7 @@ const updateFriendById = async (req, res, next) => {
       payload: updatedFriend,
     });
   } catch (e) {
-    next(e)
+    next(e);
   }
 };
 
@@ -98,16 +95,14 @@ const deleteFriendById = async (req, res, next) => {
     let foundUserArray = foundUser.friends;
 
     let filteredFriendsArray = foundUserArray.filter((id) => {
-
       return id.toString() !== deletedFriend._id.toString();
-
     });
 
     foundUser.friends = filteredFriendsArray;
 
     await foundUser.save();
 
-    res.json({ message: "success", payload: deletedFriend });
+    res.json({ message: 'success', payload: deletedFriend });
   } catch (e) {
     next(e);
   }

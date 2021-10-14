@@ -1,8 +1,8 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const app = require("./app");
+const app = require('./app');
 
 const port = 8080;
 
@@ -14,7 +14,7 @@ mongoose
   .then(() => {
     app.listen(port, () => {
       console.log(`Server connected on ${port}`);
-      console.log("MongoDB Connected PAB");
+      console.log('MongoDB Connected');
     });
   })
   .catch((e) => {
