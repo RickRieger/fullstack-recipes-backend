@@ -46,7 +46,7 @@ const updateFriendById = async (req, res, next) => {
       updateObj[key] = body[key];
     }
   }
-  console.log(updateObj);
+
 
   try {
     let updatedFriend = await Friend.findByIdAndUpdate(

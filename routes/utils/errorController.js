@@ -31,8 +31,6 @@ function dispatchErrorProduction(error, req, res) {
 function handleMongoDBDuplicate(err) {
   let errorMessageDuplicateKey = Object.keys(err.keyValue)[0];
   let errorMessageDuplicateValue = Object.values(err.keyValue)[0];
-  console.log(errorMessageDuplicateKey);
-  console.log(errorMessageDuplicateValue);
   //we have parse some data in here
   let message = `${errorMessageDuplicateKey} - ${errorMessageDuplicateValue} is taken please choose another one`;
   return new ErrorMessageHandlerClass(message, 400);
@@ -61,26 +59,18 @@ function handleMongoDBDuplicate(err) {
 // }
 
 module.exports = (err, req, res, next) => {
-  // console.log(err);
-  // console.log(err.message);
-  // console.log("2");
+
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
-  // console.log("3");
-  // console.log(err);
+
   let error = { ...err };
-  // console.log("4");
+
   error.message = err.message;
-  // console.log("5");
-  // console.log(error);
-  // console.log(error.message);
-  // console.log("6");
-  console.log(error);
+
   if (error.code === 11000 || error.code === 11001) {
     error = handleMongoDBDuplicate(error);
   }
-  // console.log("7");
-  // console.log(error);
+
   if (process.env.NODE_ENV === "development") {
     dispatchErrorDevelopment(error, req, res);
   } else {

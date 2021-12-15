@@ -10,7 +10,7 @@ function checkIsEmailFunc(req, res, next) {
   if (!checkIsEmail(req.body.email)) {
     errorObj.wrongEmailFormat = "Must be in email format!";
   }
-  console.log('made it this far1');
+
   next();
 }
 
@@ -24,18 +24,18 @@ function checkIsAlphaFunc(req, res, next) {
       }
     }
   }
-  console.log('made it this far2');
+ 
   next();
 }
 
 function checkIsAlphanumericFunc(req, res, next) {
-  console.log('made it this far3');
-  console.log(req.body);
+
+
   const { errorObj } = res.locals;
   if (!checkIsAlphanumeric(req.body.userName)) {
     errorObj.usernameError = "username can only have characters and numbers";
   }
-  console.log('made it this far4');
+
   next();
 }
 

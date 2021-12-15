@@ -12,7 +12,7 @@ const getAllRecipes = async (req, res,next) => {
         select: '-__v',
       })
       .select('-email -password -firstName -lastName -__v -_id -userName -friends -grocery');
-    console.log(payload);
+
     res.json(payload);
   } catch (e) {
     next(e)
@@ -29,7 +29,7 @@ const createRecipe = async (req, res, next) => {
     });
     const savedNewRecipe = await newRecipe.save();
     const { decodedJwt } = res.locals;
-    console.log("yo dude");
+
    
     const foundTargetUser = await User.findOne({ email: decodedJwt.email });
     foundTargetUser.recipes.push(savedNewRecipe._id);
@@ -49,7 +49,7 @@ const deleteRecipeById = async (req, res, next) => {
 
     let foundRecipeArray = foundUser.friends;
 
-    console.log(foundRecipeArray, '1');
+
 
     let filteredRecipesArray = foundRecipeArray.filter((id) => {
 

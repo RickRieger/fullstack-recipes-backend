@@ -50,7 +50,7 @@ async function createGroceryItem(req, res, next) {
     let savedGroceryArray = [];
     try {
       for (groceryItem of groceryItemListArray) {
-        console.log(groceryItem);
+  
 
         let createdGroceryItem = new Grocery({
           grocery: groceryItem,
@@ -119,11 +119,11 @@ async function deleteGrocery(req, res, next) {
     let deletedGrocery = await Grocery.findByIdAndRemove(req.params.id);
 
     const { decodedJwt } = res.locals;
-    console.log(decodedJwt.email);
+
     let foundUser = await User.findOne({ email: decodedJwt.email });
 
     let foundGroceryArray = foundUser.grocery;
-    console.log('here', foundGroceryArray);
+
     let filteredGroceryArray = foundGroceryArray.filter((id) => {
       return id.toString() !== deletedGrocery._id.toString();
     });
@@ -140,7 +140,7 @@ async function deleteGrocery(req, res, next) {
 
 async function sortGroceryByDate(req, res, next) {
   try {
-    console.log(req, res);
+
     let sort = req.query.sort;
     let sortOrder = sort === 'desc' ? -1 : 1;
     let foundGrocery = await Grocery.find({}).sort({ Date: sortOrder });
@@ -160,7 +160,7 @@ async function sortGroceryByPurchased(req, res, next) {
     if (!sortByDate) {
       finalSort = null;
     } else {
-      console.log(sortByDate);
+
       finalSort = sortByDate === 'asc' ? 1 : -1;
     }
     let foundGrocery = await Grocery.find({ purchased: isPurchasedOrder }).sort(
